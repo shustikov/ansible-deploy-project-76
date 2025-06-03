@@ -1,0 +1,6 @@
+db_host: change
+db_port: 5432
+db_name: redmine
+db_user: redmine
+db_password: change
+redmine_port: 3000

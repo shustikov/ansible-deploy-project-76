@@ -1,0 +1,5 @@
+db_host: host.docker.internal
+db_port: 5432
+db_password: "{{ vault_db_password }}"
+datadog_api_key: "{{ vault_datadog_api_key }}"
+datadog_url: "{{ datadoghq.eu }}"

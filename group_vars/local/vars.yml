@@ -1,0 +1,3 @@
+db_host: host.docker.internal
+db_port: 5432
+db_password: "{{ vault_db_password }}"

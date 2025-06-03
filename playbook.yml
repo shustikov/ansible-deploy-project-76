@@ -1,0 +1,43 @@
+- hosts: all
+  become: true
+
+  roles:
+    - role: geerlingguy.pip
+      vars:
+        pip_install_packages:
+          - name: docker
+      state: present
+      tags: setup
+
+    - role: geerlingguy.docker
+      state: present
+      tags: setup
+
+    - role: datadog.datadog
+      when: inventory_hostname in groups['webservers']
+      vars:
+        datadog_api_key: "{{ datadog_api_key }}"
+        datadog_site: "{{ datadog_url }}"
+        datadog_checks:
+          http_check:
+            init_config:
+              instances:
+                - name: Check servers health
+                  url: "http://{{ hostvars[inventory_hostname].ansible_host }}:{{ redmine_port }}/"
+      tags: setup
+
+  tasks:
+    - name: prepare env for redmine container
+      template:
+        src: .env.redmine.j2
+        dest: "{{ ansible_env.HOME }}/.env.redmine"
+        mode: "660"
+      tags: redmine
+
+    - name: up redmine
+      community.docker.docker_container:
+        name: redmine
+        image: redmine
+        ports: "[3000: {{ redmine_port }}]"
+        env_file: "{{ ansible_env.HOME }}/.env.redmine"
+      tags: redmine

@@ -1,0 +1,2 @@
+vault_db_password: secret
+vault_datadog_api_key: api_key
