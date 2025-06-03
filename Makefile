@@ -14,4 +14,7 @@ local_postgres:
 	docker run -d --name some-postgres -p 5432:5432 -e POSTGRES_PASSWORD=secret -e POSTGRES_USER=redmine postgres
 
 edit_vault:
-	ansible-vault edit ./group_vars/local/vault.yml --vault-password-file .pass
+	ansible-vault edit ./group_vars/webservers/vault.yml --vault-password-file .pass
+
+encrypt_vault:
+	ansible-vault encrypt ./group_vars/webservers/vault.yml --vault-password-file .pass
